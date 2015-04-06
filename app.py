@@ -9,5 +9,5 @@ while True:
     if(query == '0'):
         break
 
-    data = process.query_index(query, "parser/pulledfeeds", 100)
+    data = process.query_index(query, "pulledfeeds", 100)
     print data

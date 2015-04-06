@@ -5,7 +5,7 @@ from whoosh.qparser import *
 
 def indexer(data):
 
-    schema = Schema(link=TEXT(stored=True), title=TEXT, summary=TEXT)
+    schema = Schema(link=TEXT(stored=True), title=TEXT, summary=TEXT, content=TEXT)
     ix = create_in("pulledfeeds", schema)
 
     writer = ix.writer()
@@ -13,7 +13,8 @@ def indexer(data):
     for item in data:
         writer.add_document(link=item['link'],
                             title=item['title'],
-                            summary=item['summary'])
+                            summary=item['summary'],
+                            content=item['content'])
 
     writer.commit()
 
@@ -23,7 +24,7 @@ def query_index(query, index, maxlimit):
     query_results = []
 
     with ix.searcher() as searcher:
-        query = MultifieldParser(["content", "title"], schema=ix.schema, group=OrGroup).parse(query)
+        query = MultifieldParser(["content", "summary", "title"], schema=ix.schema, group=OrGroup).parse(query)
         results = searcher.search(query, limit=100)
 
         for hit in results:

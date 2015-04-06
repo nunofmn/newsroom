@@ -1,6 +1,8 @@
 from parser import feed
+from parser import process
 
-feeds = ["http://feeds.jn.pt/JN-ULTIMAS", "http://feeds.dn.pt/DN-Ultimas"]
+feeds = ["http://feeds.dn.pt/DN-Portugal", "http://feeds.jn.pt/JN-Pais"]
+
 
 for url in feeds:
-    feed.import_feed(url)
+    process.indexer(feed.import_feed(url))
