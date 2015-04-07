@@ -8,8 +8,6 @@ def index():
 
 @app.route("/search", methods=['POST'])
 def search():
-    if not request.form['query']:
-        abort(400)
 
     data = process.query_index(request.form['query'], "pulledfeeds", 100)
     print data

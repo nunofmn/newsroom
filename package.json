@@ -25,5 +25,8 @@
     "gulp-size": "^1.2.1",
     "react": "^0.13.1",
     "reactify": "^1.1.0"
+  },
+  "dependencies": {
+    "superagent": "^1.1.0"
   }
 }
