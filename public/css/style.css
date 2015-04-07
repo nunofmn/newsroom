@@ -1,0 +1,21 @@
+#logo {
+    font-size: 100px;
+    font-family: 'Georgia';
+    font-weight: bold;
+}
+
+.stylish-input-group .input-group-addon{
+    background: white !important;
+    font-size: 25px;
+}
+.stylish-input-group .form-control{
+    border-right:0;
+    box-shadow:0 0 0;
+    border-color:#ccc;
+    font-size: 18px;
+    height: 50px;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
