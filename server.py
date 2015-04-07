@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from parser import process
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return "Newsroom"
+def index():
+    return render_template('index.html')
 
 @app.route("/search", methods=['POST'])
 def search():
