@@ -2,7 +2,6 @@ var React = require('react');
 
 var HitItem = React.createClass({
     render: function() {
-        console.log("Done!");
         return (
             <li className="hit-item">
                 <div>
