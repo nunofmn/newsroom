@@ -15,7 +15,20 @@
     font-size: 18px;
     height: 50px;
 }
+
 .stylish-input-group button{
     border:0;
     background:transparent;
 }
+
+
+.search-info {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+
