@@ -1,0 +1,20 @@
+{
+  "name": "newsroom",
+  "version": "0.1",
+  "homepage": "https://github.com/nunofmn/newsroom",
+  "authors": [
+    "Nuno Nogueira <nunofmn@gmail.com>"
+  ],
+  "description": "Portuguese news aggregator",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.1"
+  }
+}

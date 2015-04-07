@@ -1,0 +1,28 @@
+{
+  "name": "newsroom",
+  "version": "0.1.0",
+  "description": "Web Extraction and Analysis project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nunofmn/newsroom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nunofmn/newsroom/issues"
+  },
+  "homepage": "https://github.com/nunofmn/newsroom",
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "gulp": "^3.8.11",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.1",
+    "gulp-size": "^1.2.1",
+    "react": "^0.13.1",
+    "reactify": "^1.1.0"
+  }
+}
