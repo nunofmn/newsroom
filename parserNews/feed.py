@@ -6,6 +6,7 @@ def import_feed(url):
     parsed_data = []
     feed = feedparser.parse(url)
 
+    i = 0
     for item in iter(feed['entries']):
         parsed_data.append({
             'title': item['title'],
@@ -13,6 +14,9 @@ def import_feed(url):
             'summary': item['summary'].split("<img")[0],
             'content': article_parse(item['link'])
         })
+        # i += 1
+        # if i == 6:
+        #     break; #########################
 
     return parsed_data
 

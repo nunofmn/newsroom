@@ -1,7 +1,7 @@
-from parser import feed
-from parser import process
+from parserNews import feed
+from parserNews import process
 
-feeds = ["http://feeds.dn.pt/DN-Portugal", "http://feeds.jn.pt/JN-Pais"]
+feeds = ["http://feeds.dn.pt/DN-Portugal"]
 
 
 for url in feeds:

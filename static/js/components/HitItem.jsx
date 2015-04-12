@@ -8,6 +8,7 @@ var HitItem = React.createClass({
                     <h3>{this.props.item.title}</h3>
                     <p className="highlights" dangerouslySetInnerHTML={{__html: this.props.item.highlights}}/>
                     <a href={this.props.item.link}>{this.props.item.link}</a>
+                    <p>Entities found: {this.props.item.entities}</p>
                 </div>
             </li>
         );

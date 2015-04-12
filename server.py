@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, render_template
-from parser import process
+from parserNews import process
 app = Flask(__name__)
 
 @app.route("/")
