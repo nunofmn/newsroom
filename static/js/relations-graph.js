@@ -91,10 +91,10 @@ var updateNodeInfo = function(node) {
     entities.links.forEach(function(elem, index, data) {
         if(node.index == elem.source.index) {
             nodelisting = nodelisting + "<li>" + entities.nodes[elem.target.index].name +
-                "<ul><li>Weight: " + elem.target.weight + "</li></ul></li>\n";
+                "<ul><li>Weight: " + elem.value + "</li></ul></li>\n";
         }else if(node.index == elem.target.index) {
             nodelisting = nodelisting + "<li>" + entities.nodes[elem.source.index].name +
-                "<ul><li>Weight: " + elem.target.weight + "</li></ul></li>\n";
+                "<ul><li>Weight: " + elem.value + "</li></ul></li>\n";
         }
     });
 
