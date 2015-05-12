@@ -1,4 +1,39 @@
 var entities;
+var oldnodes = [];
+
+$('#search-query').keyup(function(e) {
+    if(e.keyCode == 13) {
+        var query = $(this).val();
+
+        if(oldnodes.length !== 0) {
+            oldnodes.forEach(function(elem) {
+                elem.attr("r", 10);
+            });
+        }
+
+        oldnodes = [];
+
+        if(query === "") {
+            return;
+        }
+
+        entities.nodes.forEach(function(elem, index, data) {
+            var name = elem.name.toLowerCase();
+
+            if(name.includes(query.toLowerCase())) {
+                var node = d3.selectAll(".node").filter(function(d, i) {
+                    return i == index ? this : null;
+                });
+                node.attr("r", 20);
+
+                oldnodes.push(node);
+            }
+        });
+
+
+    }
+});
+
 var width = $("#graph").width();
 var height = 600;
 
@@ -12,7 +47,6 @@ var force = d3.layout.force()
 var svg = d3.select("#graph").append("svg")
 .attr("width", width)
 .attr("height", height);
-
 
 d3.json("http://localhost:5000/entities/data", function(error, graph) {
     entities = graph;
