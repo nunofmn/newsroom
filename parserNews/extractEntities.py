@@ -1,4 +1,4 @@
-
+# encoding=utf8
 import sqlite3 as lite
 
 def save_entities(url, lista_referencias):
@@ -135,7 +135,8 @@ def save_relations(lista_entidades_relacionadas):
             if Entidades.endswith(","):
                 Entidades = Entidades[:-1]
             #Entidades = ",".join(lista_sem_referencia )
-            cur.execute("INSERT OR REPLACE INTO Relacoes (Nome, Entidades) VALUES(?,?)",(chave, Entidades))
+            if len(Entidades) > 0:
+                cur.execute("INSERT OR REPLACE INTO Relacoes (Nome, Entidades) VALUES(?,?)",(chave, Entidades))
     con.commit()
     print "Records created successfully";
     con.close()
@@ -156,5 +157,62 @@ def get_relations(nome):
     con.close()
     return result
 
+def get_all_relations():
+    con = lite.connect('test.db')
+    final = ""
+    with con:
+        cur = con.cursor()
+        cur.execute("create table if not exists Relacoes (Nome TEXT, Entidades TEXT)")
+        cursor = con.execute("SELECT * from Relacoes ")
+        con.commit()
+        nodes = []
+        tmp_relations = []
+        dicionario = {}
+        count = 0
+        for row in cursor:
+            nodes.append(row[0].encode('UTF8'))
+            tmp_relations.append(row[1].encode('UTF8'))
+            print "**",row[0].encode('UTF8')
+            print "--*",row[1].encode('UTF8')
+            dicionario[row[0].encode('UTF8')] = count
+            count +=1
+
+        [x.encode('UTF8') for x in tmp_relations]
+        link ='"links":['
+
+        node_string = '{"nodes":['
+        for node in nodes:
+            node_string += '{"name":"'+ node +'"},'
+        if node_string.endswith(","):
+            node_string = node_string[:-1]
+        node_string+='],'
+
+
+        for relations in tmp_relations:
+            rel = relations.split(",")
+            myindex = tmp_relations.index(relations)
+            for relation in rel:
+
+                par = relation.split(":")
+                nome = par[0].encode("utf-8") #nome
+                print "---", nome
+                v = par[1] #num vezes
+                if dicionario[nome] > myindex:
+                    link +='{"source":'+str(myindex)
+                    link+= ',"target":'+ str(dicionario[nome]) + ',"value":'+ v + '},'
+            print "++",row
+
+        if link.endswith(","):
+            link = link[:-1]
+        link+= ']}'
+
+        final = node_string+link
+        print final
+
+
+    con.close()
+    return final
+
 def string_to_array(frase):
     return  frase.split(',')
+

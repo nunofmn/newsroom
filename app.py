@@ -20,7 +20,9 @@ while True:
         q = raw_input("Insert relation search:\n")
         v =  save_ent.get_relations(unicode(q))
         print v
-
+    elif query == '2':
+        q = raw_input("kkk")
+        save_ent.get_all_relations()
     else:
         data = process.query_index(query, "pulledfeeds", 200)
         print data
