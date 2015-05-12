@@ -177,7 +177,7 @@ def get_all_relations():
             dicionario[row[0].encode('UTF8')] = count
             count +=1
 
-        [x.encode('UTF8') for x in tmp_relations]
+        [x.encode('utf-8') for x in tmp_relations]
         link ='"links":['
 
         node_string = '{"nodes":['
@@ -207,6 +207,7 @@ def get_all_relations():
         link+= ']}'
 
         final = node_string+link
+        final = final.encode("utf-8")
         print final
 
 
