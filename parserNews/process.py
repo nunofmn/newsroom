@@ -56,7 +56,7 @@ def indexer(data):
         summary=item['summary']
         content=item['content']
 
-        sentencesArray = [title, summary ]
+        sentencesArray = [title, summary, content ]
 
         person_list = []
         for sentences in sentencesArray:

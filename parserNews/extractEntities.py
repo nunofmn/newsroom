@@ -93,11 +93,10 @@ def save_relations(lista_entidades_relacionadas):
     for chave in lista_entidades_relacionadas:
         lista_valores_anteriores.append(string_to_array(get_relations(chave)))
     #estrutura->nome:num_noticias_diferentes
-    with con:
 
+    with con:
         cur = con.cursor()
-        cur.execute("create table if not exists Relacoes (Nome TEXT, Entidades TEXT)")
-        print "entrou"
+        cur.execute("create table if not exists Relacoes (Nome TEXT PRIMARY KEY, Entidades TEXT)")
         for chave in lista_entidades_relacionadas:
             lista_sem_referencia = list(lista_entidades_relacionadas)
             if chave in lista_sem_referencia:
@@ -105,9 +104,9 @@ def save_relations(lista_entidades_relacionadas):
 
             dicionario = {}
             lista_entidades_ja_percorridas = []
+            count_Previous_values = len(lista_valores_anteriores[0])
             for entidade in lista_valores_anteriores[0]:
                 if len(entidade) > 0:
-                    print "*****",entidade
                     par = entidade.split(":")
                     k = par[0]
                     v = par[1]
@@ -124,19 +123,18 @@ def save_relations(lista_entidades_relacionadas):
 
             Entidades = ""
             for k, v in dicionario.items():
-                # Display key and value.
-                #print(k, v)
                 Entidades+= k + ":" + str(v) + ","
 
-            #Entidades = ",".join(lista_sem_referencia + list(set(lista_valores_anteriores[0]) - set(lista_sem_referencia)))
-            #Entidades.replace(",,", ",");
             print "Chave {0} --> {1}".format( chave.encode('utf-8'), Entidades.encode('utf-8'))
             del lista_valores_anteriores[0]
             if Entidades.endswith(","):
                 Entidades = Entidades[:-1]
-            #Entidades = ",".join(lista_sem_referencia )
             if len(Entidades) > 0:
                 cur.execute("INSERT OR REPLACE INTO Relacoes (Nome, Entidades) VALUES(?,?)",(chave, Entidades))
+                # if count_Previous_values == 0:
+                #     cur.execute("INSERT OR REPLACE INTO Relacoes (Nome, Entidades) VALUES(?,?)",(chave, Entidades))
+                # else:
+                #     cur.execute("REPLACE INTO Relacoes (Entidades) VALUES(?) WHERE Nome=?",( Entidades, chave))
     con.commit()
     print "Records created successfully";
     con.close()
@@ -147,7 +145,7 @@ def get_relations(nome):
     result = ""
     with con:
         cur = con.cursor()
-        cur.execute("create table if not exists Relacoes (Nome TEXT, Entidades TEXT)")
+        cur.execute("create table if not exists Relacoes (Nome TEXT PRIMARY KEY, Entidades TEXT)")
         cursor = con.execute("SELECT Entidades from Relacoes WHERE Nome=?", (nome,))
         con.commit()
         for row in cursor:
@@ -162,7 +160,7 @@ def get_all_relations():
     final = ""
     with con:
         cur = con.cursor()
-        cur.execute("create table if not exists Relacoes (Nome TEXT, Entidades TEXT)")
+        cur.execute("create table if not exists Relacoes (Nome TEXT PRIMARY KEY, Entidades TEXT)")
         cursor = con.execute("SELECT * from Relacoes ")
         con.commit()
         nodes = []
@@ -172,8 +170,9 @@ def get_all_relations():
         for row in cursor:
             nodes.append(row[0].encode('UTF8'))
             tmp_relations.append(row[1].encode('UTF8'))
-            print "**",row[0].encode('UTF8')
-            print "--*",row[1].encode('UTF8')
+            #print "**",row[0].encode('UTF8')
+            #print "--*",row[1].encode('UTF8')
+            print row
             dicionario[row[0].encode('UTF8')] = count
             count +=1
 
@@ -195,12 +194,10 @@ def get_all_relations():
 
                 par = relation.split(":")
                 nome = par[0].encode("utf-8") #nome
-                print "---", nome
                 v = par[1] #num vezes
                 if dicionario[nome] > myindex:
                     link +='{"source":'+str(myindex)
                     link+= ',"target":'+ str(dicionario[nome]) + ',"value":'+ v + '},'
-            print "++",row
 
         if link.endswith(","):
             link = link[:-1]

@@ -5,7 +5,7 @@ var color = d3.scale.category20();
 
 var force = d3.layout.force()
 .charge(-150)
-.linkDistance(70)
+.linkDistance(100)
 .size([width, height]);
 
 var svg = d3.select("#graph").append("svg")
@@ -28,7 +28,7 @@ d3.json("http://localhost:5000/entities/data", function(error, graph) {
     .data(graph.nodes)
     .enter().append("circle")
     .attr("class", "node")
-    .attr("r", 15)
+    .attr("r", 10)
     .style("fill", function(d) { return d3.rgb("#"+((1<<24)*Math.random()|0).toString(16)); })
     .call(force.drag);
 
