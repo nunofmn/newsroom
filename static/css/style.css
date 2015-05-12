@@ -50,5 +50,9 @@
     overflow-x: hidden;
 }
 
+.node-relations li {
+    margin-bottom: 5px;
+}
+
 
 

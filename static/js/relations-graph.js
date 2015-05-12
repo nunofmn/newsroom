@@ -1,18 +1,21 @@
+var entities;
 var width = $("#graph").width();
 var height = 600;
 
 var color = d3.scale.category20();
 
 var force = d3.layout.force()
-.charge(-150)
-.linkDistance(100)
+.charge(-80)
+.linkDistance(70)
 .size([width, height]);
 
 var svg = d3.select("#graph").append("svg")
 .attr("width", width)
 .attr("height", height);
 
+
 d3.json("http://localhost:5000/entities/data", function(error, graph) {
+    entities = graph;
     force
     .nodes(graph.nodes)
     .links(graph.links)
@@ -43,10 +46,24 @@ d3.json("http://localhost:5000/entities/data", function(error, graph) {
 
         node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
-        .on("click", function(d) { updateNodeInfo(d); });
+        .on("dblclick", function(d) { updateNodeInfo(d); });
     });
 });
 
 var updateNodeInfo = function(node) {
     $(".node-name").html(node.name);
+    var nodelisting = "";
+
+    entities.links.forEach(function(elem, index, data) {
+        if(node.index == elem.source.index) {
+            nodelisting = nodelisting + "<li>" + entities.nodes[elem.target.index].name +
+                "<ul><li>Weight: " + elem.target.weight + "</li></ul></li>\n";
+        }else if(node.index == elem.target.index) {
+            nodelisting = nodelisting + "<li>" + entities.nodes[elem.source.index].name +
+                "<ul><li>Weight: " + elem.target.weight + "</li></ul></li>\n";
+        }
+    });
+
+    $(".node-relations").html(nodelisting);
+    $(".node-info").show();
 };
