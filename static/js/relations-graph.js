@@ -24,7 +24,7 @@ $('#search-query').keyup(function(e) {
                 var node = d3.selectAll(".node").filter(function(d, i) {
                     return i == index ? this : null;
                 });
-                node.attr("r", 20);
+                node.transition().duration(1000).attr("r", 25);
 
                 oldnodes.push(node);
             }
