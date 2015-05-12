@@ -1,4 +1,11 @@
+# encoding=utf8
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 from parserNews import process
+from parserNews import extractEntities as save_ent
+
 
 print("Newsroom search app")
 print("To exit press 0")
@@ -9,5 +16,11 @@ while True:
     if(query == '0'):
         break
 
-    data = process.query_index(query, "pulledfeeds", 200)
-    print data
+    if query == '1':
+        q = raw_input("Insert relation search:\n")
+        v =  save_ent.get_relations(unicode(q))
+        print v
+
+    else:
+        data = process.query_index(query, "pulledfeeds", 200)
+        print data

@@ -1,3 +1,4 @@
+
 import sqlite3 as lite
 
 def save_entities(url, lista_referencias):
@@ -85,3 +86,75 @@ def checkIfEntityWikiExists(name):
     con.close()
     return result  != ""
 
+
+def save_relations(lista_entidades_relacionadas):
+    con = lite.connect('test.db')
+    lista_valores_anteriores = []
+    for chave in lista_entidades_relacionadas:
+        lista_valores_anteriores.append(string_to_array(get_relations(chave)))
+    #estrutura->nome:num_noticias_diferentes
+    with con:
+
+        cur = con.cursor()
+        cur.execute("create table if not exists Relacoes (Nome TEXT, Entidades TEXT)")
+        print "entrou"
+        for chave in lista_entidades_relacionadas:
+            lista_sem_referencia = list(lista_entidades_relacionadas)
+            if chave in lista_sem_referencia:
+                lista_sem_referencia.remove(chave) # remove ele proprio da lista
+
+            dicionario = {}
+            lista_entidades_ja_percorridas = []
+            for entidade in lista_valores_anteriores[0]:
+                if len(entidade) > 0:
+                    print "*****",entidade
+                    par = entidade.split(":")
+                    k = par[0]
+                    v = par[1]
+                    dicionario[k] = int(v)
+
+            for entidade_nova in lista_sem_referencia:
+                if dicionario.has_key(entidade_nova):
+                    if entidade_nova not in lista_entidades_ja_percorridas:
+                        dicionario[entidade_nova] += 1 #incrementa o numero de noticias em que aparece ambas as entidades
+                    #incrementar valor uma vez apenas por noticia
+                else:
+                    dicionario[entidade_nova] = 1
+                lista_entidades_ja_percorridas.append(entidade_nova)
+
+            Entidades = ""
+            for k, v in dicionario.items():
+                # Display key and value.
+                #print(k, v)
+                Entidades+= k + ":" + str(v) + ","
+
+            #Entidades = ",".join(lista_sem_referencia + list(set(lista_valores_anteriores[0]) - set(lista_sem_referencia)))
+            #Entidades.replace(",,", ",");
+            print "Chave {0} --> {1}".format( chave.encode('utf-8'), Entidades.encode('utf-8'))
+            del lista_valores_anteriores[0]
+            if Entidades.endswith(","):
+                Entidades = Entidades[:-1]
+            #Entidades = ",".join(lista_sem_referencia )
+            cur.execute("INSERT OR REPLACE INTO Relacoes (Nome, Entidades) VALUES(?,?)",(chave, Entidades))
+    con.commit()
+    print "Records created successfully";
+    con.close()
+
+
+def get_relations(nome):
+    con = lite.connect('test.db')
+    result = ""
+    with con:
+        cur = con.cursor()
+        cur.execute("create table if not exists Relacoes (Nome TEXT, Entidades TEXT)")
+        cursor = con.execute("SELECT Entidades from Relacoes WHERE Nome=?", (nome,))
+        con.commit()
+        for row in cursor:
+            result = row[0]
+
+
+    con.close()
+    return result
+
+def string_to_array(frase):
+    return  frase.split(',')
