@@ -1,14 +1,14 @@
-var width = 960,
-    height = 500;
+var width = $("#graph").width();
+var height = 500;
 
 var color = d3.scale.category20();
 
 var force = d3.layout.force()
 .charge(-150)
-.linkDistance(60)
+.linkDistance(70)
 .size([width, height]);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#graph").append("svg")
 .attr("width", width)
 .attr("height", height);
 
