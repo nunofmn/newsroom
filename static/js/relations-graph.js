@@ -1,5 +1,5 @@
 var width = $("#graph").width();
-var height = 500;
+var height = 600;
 
 var color = d3.scale.category20();
 
@@ -43,6 +43,10 @@ d3.json("http://localhost:5000/entities/data", function(error, graph) {
 
         node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
-        .on("click", function(d) { return alert(d.name); });
+        .on("click", function(d) { updateNodeInfo(d); });
     });
 });
+
+var updateNodeInfo = function(node) {
+    $(".node-name").html(node.name);
+};
