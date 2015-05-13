@@ -1,6 +1,12 @@
 var entities;
 var oldnodes = [];
 
+if (!String.prototype.includes) {
+  String.prototype.includes = function() {'use strict';
+      return String.prototype.indexOf.apply(this, arguments) !== -1;
+    };
+}
+
 $('#search-query').keyup(function(e) {
     if(e.keyCode == 13) {
         var query = $(this).val();
@@ -101,3 +107,4 @@ var updateNodeInfo = function(node) {
     $(".node-relations").html(nodelisting);
     $(".node-info").show();
 };
+
