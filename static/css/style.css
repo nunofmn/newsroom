@@ -48,11 +48,9 @@
 
 .container-fluid {
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .node-relations li {
     margin-bottom: 5px;
 }
-
-
-

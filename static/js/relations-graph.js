@@ -41,18 +41,27 @@ $('#search-query').keyup(function(e) {
 });
 
 var width = $("#graph").width();
-var height = 600;
+var height = 700;
 
 var color = d3.scale.category20();
 
 var force = d3.layout.force()
-.charge(-80)
+.charge(-120)
 .linkDistance(70)
 .size([width, height]);
 
 var svg = d3.select("#graph").append("svg")
 .attr("width", width)
-.attr("height", height);
+.attr("height", height)
+.attr("pointer-events", "all")
+.append('svg:g')
+.call(d3.behavior.zoom().on("zoom", redraw))
+.append('svg:g');
+
+svg.append('svg:rect')
+.attr('width', width)
+.attr('height', height)
+.attr('fill', 'white');
 
 d3.json("http://localhost:5000/entities/data", function(error, graph) {
     entities = graph;
@@ -72,6 +81,8 @@ d3.json("http://localhost:5000/entities/data", function(error, graph) {
     .enter().append("circle")
     .attr("class", "node")
     .attr("r", 10)
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
     .style("fill", function(d) { return d3.rgb("#"+((1<<24)*Math.random()|0).toString(16)); })
     .call(force.drag);
 
@@ -97,10 +108,10 @@ var updateNodeInfo = function(node) {
     entities.links.forEach(function(elem, index, data) {
         if(node.index == elem.source.index) {
             nodelisting = nodelisting + "<li>" + entities.nodes[elem.target.index].name +
-                "<ul><li>Weight: " + elem.value + "</li></ul></li>\n";
+                "<ul><li>Occurrences: " + elem.value + "</li></ul></li>\n";
         }else if(node.index == elem.target.index) {
             nodelisting = nodelisting + "<li>" + entities.nodes[elem.source.index].name +
-                "<ul><li>Weight: " + elem.value + "</li></ul></li>\n";
+                "<ul><li>Occurrences: " + elem.value + "</li></ul></li>\n";
         }
     });
 
@@ -108,3 +119,9 @@ var updateNodeInfo = function(node) {
     $(".node-info").show();
 };
 
+function redraw() {
+  console.log("here", d3.event.translate, d3.event.scale);
+  svg.attr("transform",
+                "translate(" + d3.event.translate + ")"
+                + " scale(" + d3.event.scale + ")");
+}
