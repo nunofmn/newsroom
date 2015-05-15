@@ -25,4 +25,5 @@ while True:
         save_ent.get_all_relations()
     else:
         data = process.query_index(query, "pulledfeeds", 200)
-        print data
+        for entry in data:
+            print entry['link']
